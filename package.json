@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Song-Yunseop/my_first_server#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.16.1",
+    "sequelize-cli": "^6.4.1"
   }
 }
