@@ -1,5 +1,6 @@
 const express = require("express");
-const { sequelize, Sequelize } = require('./models');
+const { sequelize, Sequelize, mytest } = require('./models');
+
 
 const driver = async () => {
     try {
@@ -14,9 +15,11 @@ const driver = async () => {
 driver();
 const app = express();
 
-app.use('/',(req, res)=>{
-    res.send("test");
-})
+app.use('/', async(req, res)=>{
+    const a = await mytest.destroy({where: {id:2}});
+    res.send({test:"생성완료..!!", a: a})
+});
+
 
 app.listen(3000,()=> {
     console.log("http://localhost:3000");
