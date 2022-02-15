@@ -16,8 +16,7 @@ driver();
 const app = express();
 
 app.use('/', async(req, res)=>{
-    const a = await mytest.destroy({where: {id:2}});
-    res.send({test:"생성완료..!!", a: a})
+    
 });
 
 
