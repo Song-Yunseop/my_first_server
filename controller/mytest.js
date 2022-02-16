@@ -22,8 +22,7 @@ const deleteMytest = async (req, res) => {
 			data: null,
 		});
 	}
-};
-
+} 
 
 const postMytest = async (리퀘스트, 리스폰스) => {
 	const test = 리퀘스트.body.test;
@@ -42,5 +41,43 @@ const postMytest = async (리퀘스트, 리스폰스) => {
 		});
 	}
 };
+
+const getOneMytest = async (req, res) => {
+	try {
+		const a = await mytest.findAll();
+		if(!a){
+			res.send({msg: "실패..!?"})
+		}
+		res.send({ msg: "성공했습니다.", data: a });
+	} catch (error) {
+		res.send({
+			msg: "접속실패 error ",
+			data: null,
+		});
+	}
+};
+
+
+
+const postOrMytest = async (req, res) => {
+	const test = req.body.box;
+	const is = req.body.boolean;
+	console.log(req);
+	try {
+		if (test) {
+			const a = await mytest.create({ test: test });
+			res.send({ msg: "성공했습니다.", data: a });
+		} else {
+			res.send({ msg: "데이터를 안넣어요!" });
+		}
+	} catch (error) {
+		res.statue(200).send({
+			msg: "접속실패 error ",
+			data: null,
+		});
+	}
+};
+
+
 
 module.exports = { getMytest, deleteMytest , postMytest};
