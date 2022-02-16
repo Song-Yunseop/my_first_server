@@ -12,8 +12,9 @@ const getMytest = async (req, res) => {
 	}
 };
 const deleteMytest = async (req, res) => {
+	const id = req.body.id
 	try {
-		const a = await mytest.destroy({ where: { id: "21" } });
+		const a = await mytest.destroy({ where: { id: id } });
 		res.send({ msg: "성공했습니다.", data: a });
 	} catch (error) {
 		res.statue(200).send({
@@ -23,23 +24,19 @@ const deleteMytest = async (req, res) => {
 	}
 };
 
-const postMytest = async (req, res) => {
-	const test1 = req.body;
-	req.body = 
-	{
-		test: "test"
-	}
-	const test2 = test1.test;
-	console.log(test2);
+
+const postMytest = async (리퀘스트, 리스폰스) => {
+	const test = 리퀘스트.body.test;
+	console.log(리퀘스트);
 	try {
 		if (test) {
-			const a = await mytest.create({ test: "안녕하세요" });
-			res.send({ msg: "성공했습니다.", data: a });
+			const a = await mytest.create({ test: test });
+			리스폰스.send({ msg: "성공했습니다.", data: a });
 		} else {
-			res.send({ msg: "데이터를 안넣어요!" });
+			리스폰스.send({ msg: "데이터를 안넣어요!" });
 		}
 	} catch (error) {
-		res.statue(200).send({
+		리스폰스.statue(200).send({
 			msg: "접속실패 error ",
 			data: null,
 		});
