@@ -1,6 +1,6 @@
 const { sequelize, Sequelize, mytest } = require("../models");
 
-const test2 = async (req, res) => {
+const getMytest = async (req, res) => {
 	try {
 		const a = await mytest.findAll();
 		res.send({ msg: "성공했습니다.", data: a });
@@ -11,7 +11,7 @@ const test2 = async (req, res) => {
 		});
 	}
 };
-const test3 = async (req, res) => {
+const deleteMytest = async (req, res) => {
 	try {
 		const a = await mytest.destroy({ where: { id: "21" } });
 		res.send({ msg: "성공했습니다.", data: a });
@@ -23,9 +23,14 @@ const test3 = async (req, res) => {
 	}
 };
 
-const test4 = async (req, res) => {
-	const { test } = req.body;
-	console.log(req.body);
+const postMytest = async (req, res) => {
+	const test1 = req.body;
+	req.body = 
+	{
+		test: "test"
+	}
+	const test2 = test1.test;
+	console.log(test2);
 	try {
 		if (test) {
 			const a = await mytest.create({ test: "안녕하세요" });
@@ -41,4 +46,4 @@ const test4 = async (req, res) => {
 	}
 };
 
-module.exports = { test2, test3 , test4};
+module.exports = { getMytest, deleteMytest , postMytest};
