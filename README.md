@@ -6,4 +6,18 @@
 ```js
 const express = require("express")
 ```
-test
+
+
+
+POST /test 
+req: {
+        body: { test : string } 
+     }
+     
+     
+DELETE /test
+req: {
+        body: { id : number }
+     }
+     
+둘다 res는 마음대로
