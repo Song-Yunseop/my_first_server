@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         required: true,
       },
+      box: {
+        type: DataTypes.STRING,
+        required: true,
+      },
     },
     {
       sequelize,

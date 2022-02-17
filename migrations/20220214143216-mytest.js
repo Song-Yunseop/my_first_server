@@ -1,5 +1,7 @@
 "use strict";
 
+const { STRING } = require("sequelize");
+
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		/**
@@ -17,6 +19,9 @@ module.exports = {
 			},
 			test: {
 				type: Sequelize.STRING,
+			},
+			box: {
+				type: Sequelize.STRING,				
 			},
 		});
 	},
