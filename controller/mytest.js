@@ -1,11 +1,8 @@
-const res = require("express/lib/response");
-const { STRING } = require("sequelize");
-const { sequelize, Sequelize, mytest } = require("../models");
+const { mytest } = require("../models");
 
 const getMytest = async (req, res) => {
 	// const isquery = req.query;
 	// const isparams = req.params;
-
 	try {
 		const a = await mytest.findAll();
 		res.send({ msg: "성공했습니다.", data: a });
