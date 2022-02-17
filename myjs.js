@@ -13,3 +13,5 @@
 // } else {
 //     console.log("false");
 // }
+
+Boolean()
