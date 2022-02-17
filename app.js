@@ -1,6 +1,6 @@
 const express = require("express");
 const { sequelize, Sequelize, mytest } = require('./models');
-const controller = require("./controller")
+const router = require("./router")
 
 const driver = async () => {
     try {
@@ -15,7 +15,7 @@ const driver = async () => {
 driver();
 const app = express();
 app.use(express.json());
-app.use('/', controller);
+app.use('/', router);
 
 
 app.listen(3000,()=> {
