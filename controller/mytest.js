@@ -19,7 +19,7 @@ const postMytest = async (req, res) => {
 	console.log(box);
 	try {
 		if (box) {
-			const a = await mytest.create({ box: "안녕하세요" });
+			const a = await mytest.create({ box: box });
 			res.send({ msg: "성공했습니다.", data: a });
 		} else {
 			res.send({ msg: "데이터를 안넣어요!" });
@@ -60,16 +60,17 @@ const getOneMytest = async (req, res) => {
 
 const isboxpostTest = async (req, res) => {
 	const box = req.body.box;
+	const boolean = req.body.boolean;
 	console.log(box);
 	try {
-		if (box===STRING) {
-			const a = await mytest.create({ box: box});
+		if (boolean) {
+			const a = await mytest.create({ box: box });
 			res.send({ msg: "성공했습니다.", data: a });
 		} else {
 			res.send({ msg: "데이터를 안넣어요!" });
 		}
 	} catch (error) {
-		res.statue(200).send({
+		res.send({
 			msg: "접속실패 error ",
 			data: null,
 		});
