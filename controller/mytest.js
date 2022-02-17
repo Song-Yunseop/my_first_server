@@ -1,7 +1,11 @@
+const res = require("express/lib/response");
 const { STRING } = require("sequelize");
 const { sequelize, Sequelize, mytest } = require("../models");
 
 const getMytest = async (req, res) => {
+	// const isquery = req.query;
+	// const isparams = req.params;
+
 	try {
 		const a = await mytest.findAll();
 		res.send({ msg: "성공했습니다.", data: a });
@@ -34,7 +38,7 @@ const postMytest = async (req, res) => {
 
 
 const deleteMytest = async (req, res) => {
-	const id = req.body.id
+	const id = req.params.id;
 	try {
 		const a = await mytest.destroy({ where: { id: id } });
 		res.send({ msg: "성공했습니다.", data: a });
@@ -47,8 +51,9 @@ const deleteMytest = async (req, res) => {
 };
 
 const getOneMytest = async (req, res) => {
+	const id = req.query.id;
 	try {
-		const a = await mytest.findByPk(29);
+		const a = await mytest.findByPk(id);
 		res.send({ msg: "성공했습니다.", data: a });
 	} catch (error) {
 		res.send({
@@ -77,5 +82,29 @@ const isboxpostTest = async (req, res) => {
 	}
 };
 
+// const isboxPatch = async () =>{
+// 	const { box } = req.body;
+// 	const { id } = req.query;
+// 	try {
+// 		id?await mytest.update({box:box},{where:{id : id}}):0;
+// 		res.send({data:"업데이트 완료"});
+// 	} catch (error) {
+// 		res.send(error);
+// 	}
+// };
 
-module.exports = { getMytest, postMytest, deleteMytest, getOneMytest, isboxpostTest};
+const isboxPatch = async (req, res) =>{
+	const { box } = req.body;
+	const { id } = req.query;
+	let a;
+	try {
+		if (id) {
+			a = await mytest.update({box:box},{where:{id : id}});
+		}
+		res.send({ msg: "업데이트 완료", a});
+	} catch (error) {
+		res.send(error);
+	}
+};
+
+module.exports = { getMytest, postMytest, deleteMytest, getOneMytest, isboxpostTest, isboxPatch};
