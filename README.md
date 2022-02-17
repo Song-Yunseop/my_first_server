@@ -24,3 +24,8 @@ req: {
 
 첫 브랜치 테스트
 내 첫 브랜치 테스팅! 가자!
+
+2022/02/17 노드 자동실행
+npm install nodemon 설치
+nodemon app.js 이렇게했는데 에러뜸
+npx nodemon app.js
