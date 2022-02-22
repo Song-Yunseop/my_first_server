@@ -67,10 +67,12 @@ const patchQuiz = async (req, res) =>{
 	try {
 		if (id) { // 만약에 아이디가 존재하지 않는다면...? 똑같이 업데이트 완료 메세지 보내네요
 			a = await quiz.update({qid: qid, isdo: isdo, userid: userid},{where:{id : id}});
+
 			res.send({ msg: "업데이트 완료", a});
 		} else {
 			res.send({ msg: "id를 보내주세요..."});
 		}
+
 	} catch (error) {
 		res.send(error);
 	}
