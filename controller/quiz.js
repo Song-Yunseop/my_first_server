@@ -23,7 +23,7 @@ const postQuiz = async (req, res) => {
 	// const userid = req.body.userid;
 	console.log(qid);
 	try {
-		if (qid) {
+		if (qid) { 
 			const a = await quiz.create({ qid: qid, isdo: isdo, userid: userid});
 			res.send({ msg: "성공", data: a });
 		} else {
@@ -42,7 +42,7 @@ const deleteQuiz = async (req, res) => {
 	const id = req.body.id;
 	try {
 		const a = await quiz.findByPk(id);
-		if(a) {
+		if(a) { 
 			const b = await quiz.destroy({ where: { id: id } });
 			res.send({ msg: "성공했습니다.", data: b });
 		} else {
@@ -65,7 +65,7 @@ const patchQuiz = async (req, res) =>{
 	// const userid = req.body.userid;
 	let a;
 	try {
-		if (id) {
+		if (id) { // 만약에 아이디가 존재하지 않는다면...? 똑같이 업데이트 완료 메세지 보내네요
 			a = await quiz.update({qid: qid, isdo: isdo, userid: userid},{where:{id : id}});
 		}
 		res.send({ msg: "업데이트 완료", a});
@@ -77,7 +77,7 @@ const patchQuiz = async (req, res) =>{
 const getOneQuiz  = async (req, res) => {
 	const id = req.query.id;
 	// const id = req.params;
-	try {
+	try {	//여기는 a가 존재하지 않는다면 다른 메세지를 보내도록 고쳐보세요
 		const a = await quiz.findByPk(id);
 		res.send({ msg: "성공", data: a});
 	} catch (error) {

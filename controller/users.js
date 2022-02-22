@@ -60,7 +60,7 @@ const patchUsers = async (req, res) =>{
 	// const id = req.query.id;
 	let a;
 	try {
-		if (id) {
+		if (id) { //여기도 똑같네
 			a = await users.update({name : name},{where:{id : id}});
 		}
 		res.send({ msg: "업데이트 완료", a});
