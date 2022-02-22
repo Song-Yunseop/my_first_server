@@ -17,9 +17,10 @@ const getQuiz = async (req, res) => {
 
 
 const postQuiz = async (req, res) => {
-	const qid = req.body.qid;
-	const isdo = req.body.isdo;
-	const userid = req.body.userid;
+	const {qid, isdo, userid} = req.body;
+	// const qid = req.body.qid;
+	// const isdo = req.body.isdo;
+	// const userid = req.body.userid;
 	console.log(qid);
 	try {
 		if (qid) {
@@ -58,9 +59,10 @@ const deleteQuiz = async (req, res) => {
 
 const patchQuiz = async (req, res) =>{
 	const id = req.query.id;
-	const qid = req.body.qid;
-	const isdo = req.body.isdo;
-	const userid = req.body.userid;
+	const {qid, isdo, userid} = req.body;
+	// const qid = req.body.qid;
+	// const isdo = req.body.isdo;
+	// const userid = req.body.userid;
 	let a;
 	try {
 		if (id) {
