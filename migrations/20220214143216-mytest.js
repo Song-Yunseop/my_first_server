@@ -24,6 +24,45 @@ module.exports = {
 				type: Sequelize.STRING,				
 			},
 		});
+
+		queryInterface.createTable("users", {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: Sequelize.INTEGER,
+			},
+			name: {
+				type: Sequelize.STRING,
+			},
+		});
+
+		queryInterface.createTable("score", {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: Sequelize.INTEGER,
+			},
+			num: {
+				type: Sequelize.INTEGER,
+			},
+		});
+
+		queryInterface.createTable("quiz", {
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: Sequelize.INTEGER,
+			},
+			qid: {
+				type: Sequelize.INTEGER,
+			},
+			isdo: {
+				type: Sequelize.STRING,				
+			},
+		});
 	},
 
 	down: async (queryInterface, Sequelize) => {
