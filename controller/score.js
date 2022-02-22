@@ -61,8 +61,10 @@ const patchScore = async (req, res) =>{
 	try {
 		if (id) { //퀴즈에도 똑같이 있는오류 확인요망
 			a = await score.update({num : num},{where:{id : id}});
+			res.send({ msg: "업데이트 완료", a});
+		} else {
+			res.send({ msg: "id가 존재하지 않습니다..."});
 		}
-		res.send({ msg: "업데이트 완료", a});
 	} catch (error) {
 		res.send(error);
 	}
@@ -73,7 +75,11 @@ const getOneScore  = async (req, res) => {
 	// const id = req.params;
 	try {
 		const a = await score.findByPk(id);
-		res.send({ msg: "성공", data: a});
+		if (id) {
+			res.send({ msg: "성공", data: a});
+		} else {
+			res.send({ msg: "id가 존재하지 않습니다."});
+		}
 	} catch (error) {
 		res.send({
 			msg: "접속실패 error ",
