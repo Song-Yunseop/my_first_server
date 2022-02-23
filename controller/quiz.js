@@ -70,7 +70,7 @@ const patchQuiz = async (req, res) =>{
 
 			res.send({ msg: "업데이트 완료", a});
 		} else {
-			res.send({ msg: "id를 보내주세요...", a});
+			res.send({ msg: "id를 보내주세요..."});
 		}
 
 	} catch (error) {
@@ -82,8 +82,8 @@ const getOneQuiz  = async (req, res) => {
 	const id = req.query.id;
 	// const id = req.params;
 	try {	//여기는 a가 존재하지 않는다면 다른 메세지를 보내도록 고쳐보세요
-		if (id) {
-			const a = await quiz.findByPk(id);
+		const a = await quiz.findByPk(id);
+		if (a) {
 			res.send({ msg: "성공", data: a});
 		} else {
 			res.send({ msg: "id가 존재하지 않습니다."});
