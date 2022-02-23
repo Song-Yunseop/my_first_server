@@ -66,23 +66,23 @@ const postQuiz2 = async (req, res) => {
 const postQuiz3 = async (req, res) => {
 	const {	qid, isdo } = req.body;
 	const id = req.query.id;
-	const user = await users.findByPk(id);
-	const sc = await score.findByPk(id);
-	const usc = (user === sc);
-	console.log(usc);
+	try {
+		const user = await users.findByPk(id);
+		const sc = await score.findByPk(qid);
+
+	console.log(id);
 	// const qid = req.body.qid;
 	// const isdo = req.body.isdo;
 	// const userid = req.body.userid;
-	
-	try {
-		if (usc===false) {
-			const a = await quiz.create({ isdo: isdo, qid: qid});
+		if (user && sc) {
+			const a = await quiz.create({ userid: user.id, isdo: isdo, qid: sc.id});
 			res.send({ msg: "성공", data: a });
 		} else {
 			res.send({ msg: "해당 사용자는 없습니다." });
 		}
-	} catch (error) {
-		res.statue(200).send({
+	} catch (error) { 
+		console.log(error);
+		res.send({
 			msg: "접속실패 error ",
 			data: null,
 		});
