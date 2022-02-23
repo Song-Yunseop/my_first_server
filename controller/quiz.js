@@ -1,4 +1,5 @@
 const { quiz } = require("../models");
+const { getOneUsers } = require("./users");
 
 const getQuiz = async (req, res) => {
 	// const isquery = req.query;
@@ -18,16 +19,19 @@ const getQuiz = async (req, res) => {
 
 const postQuiz = async (req, res) => {
 	const {qid, isdo, userid} = req.body;
+	const id = req.query.id;
+	const user = getOneUsers;
+	console.log(user);
 	// const qid = req.body.qid;
 	// const isdo = req.body.isdo;
 	// const userid = req.body.userid;
-	console.log(qid);
+	
 	try {
-		if (qid) { 
+		if (id===user) { 
 			const a = await quiz.create({ qid: qid, isdo: isdo, userid: userid});
 			res.send({ msg: "성공", data: a });
 		} else {
-			res.send({ msg: "데이터를 안넣어요!" });
+			res.send({ msg: "해당 사용자는 없습니다." });
 		}
 	} catch (error) {
 		res.statue(200).send({
