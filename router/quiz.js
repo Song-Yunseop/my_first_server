@@ -11,5 +11,7 @@ router.post("/", controller.postQuiz);
 router.delete("/", controller.deleteQuiz);
 router.patch("/",controller.patchQuiz);
 router.get("/getOne", controller.getOneQuiz);
+router.post("/post", controller.postQuiz2);
+router.post("/post1", controller.postQuiz3);
 
 module.exports = router;
