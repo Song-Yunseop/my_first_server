@@ -1,5 +1,5 @@
-const { quiz } = require("../models");
-const { getOneUsers } = require("./users");
+const { quiz, users, score } = require("../models");
+
 
 const getQuiz = async (req, res) => {
 	// const isquery = req.query;
@@ -16,19 +16,40 @@ const getQuiz = async (req, res) => {
 };
 
 
-
 const postQuiz = async (req, res) => {
-	const {qid, isdo, userid} = req.body;
+	const {	qid, isdo, userid } = req.body;
+	console.log(qid);
+	// const qid = req.body.qid;
+	// const isdo = req.body.isdo;
+	// const userid = req.body.userid;
+	try {
+		if (qid) {
+			const a = await quiz.create({ qid: qid, isdo: isdo, userid: userid});
+			res.send({ msg: "성공", data: a });
+		} else {
+			res.send({ msg: "데이터를 안넣습니다." });
+		}
+	} catch (error) {
+		res.statue(200).send({
+			msg: "접속실패 error ",
+			data: null,
+		});
+	}
+};
+
+
+const postQuiz2 = async (req, res) => {
+	const {	isdo } = req.body;
 	const id = req.query.id;
-	const user = getOneUsers;
-	console.log(user);
+	const sc = await score.findByPk(id);
+	console.log(sc);
 	// const qid = req.body.qid;
 	// const isdo = req.body.isdo;
 	// const userid = req.body.userid;
 	
 	try {
-		if (id===user) { 
-			const a = await quiz.create({ qid: qid, isdo: isdo, userid: userid});
+		if (sc) {
+			const a = await quiz.create({ isdo: isdo, qid: sc.id});
 			res.send({ msg: "성공", data: a });
 		} else {
 			res.send({ msg: "해당 사용자는 없습니다." });
@@ -40,6 +61,34 @@ const postQuiz = async (req, res) => {
 		});
 	}
 };
+ 
+
+const postQuiz3 = async (req, res) => {
+	const {	qid, isdo } = req.body;
+	const id = req.query.id;
+	const user = await users.findByPk(id);
+	const sc = await score.findByPk(id);
+	const usc = (user === sc);
+	console.log(usc);
+	// const qid = req.body.qid;
+	// const isdo = req.body.isdo;
+	// const userid = req.body.userid;
+	
+	try {
+		if (usc===false) {
+			const a = await quiz.create({ isdo: isdo, qid: qid});
+			res.send({ msg: "성공", data: a });
+		} else {
+			res.send({ msg: "해당 사용자는 없습니다." });
+		}
+	} catch (error) {
+		res.statue(200).send({
+			msg: "접속실패 error ",
+			data: null,
+		});
+	}
+};
+//유저아이디가  해당아이디값을 가진 스코어가 있으면 퀴즈로 do qid
 
 
 const deleteQuiz = async (req, res) => {
@@ -114,4 +163,4 @@ const getOneQuiz  = async (req, res) => {
 
 
 
-module.exports = { getQuiz, postQuiz, deleteQuiz, getOneQuiz, patchQuiz};
+module.exports = { getQuiz, postQuiz, deleteQuiz, getOneQuiz, patchQuiz, postQuiz2, postQuiz3};
