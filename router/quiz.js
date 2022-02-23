@@ -13,5 +13,6 @@ router.patch("/",controller.patchQuiz);
 router.get("/getOne", controller.getOneQuiz);
 router.post("/post", controller.postQuiz2);
 router.post("/post1", controller.postQuiz3);
+router.post('/posting' ,controller.postQuizeService);
 
 module.exports = router;
