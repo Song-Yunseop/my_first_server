@@ -16,17 +16,16 @@ const getQuiz = async (req, res) => {
 };
 
 const postQuiz = async (req, res) => {
-	const { qid, isdo, userid } = req.body;
-	console.log(qid);
+	const { content, qscore} = req.body;
+	console.log(content);
 	// const qid = req.body.qid;
 	// const isdo = req.body.isdo;
 	// const userid = req.body.userid;
 	try {
-		if (qid) {
+		if (content) {
 			const a = await quiz.create({
-				qid: qid,
-				isdo: isdo,
-				userid: userid,
+				content: content,
+				qscore: qscore
 			});
 			res.send({ msg: "성공", data: a });
 		} else {
@@ -40,59 +39,59 @@ const postQuiz = async (req, res) => {
 	}
 };
 
-const postQuiz2 = async (req, res) => {
-	const { isdo } = req.body;
-	const id = req.query.id;
-	const sc = await score.findByPk(id);
-	console.log(sc);
-	// const qid = req.body.qid;
-	// const isdo = req.body.isdo;
-	// const userid = req.body.userid;
+// const postQuiz2 = async (req, res) => {
+// 	const { isdo } = req.body;
+// 	const id = req.query.id;
+// 	const sc = await score.findByPk(id);
+// 	console.log(sc);
+// 	// const qid = req.body.qid;
+// 	// const isdo = req.body.isdo;
+// 	// const userid = req.body.userid;
 
-	try {
-		if (sc) {
-			const a = await quiz.create({ isdo: isdo, qid: sc.id });
-			res.send({ msg: "성공", data: a });
-		} else {
-			res.send({ msg: "해당 사용자는 없습니다." });
-		}
-	} catch (error) {
-		res.statue(200).send({
-			msg: "접속실패 error ",
-			data: null,
-		});
-	}
-};
+// 	try {
+// 		if (sc) {
+// 			const a = await quiz.create({ isdo: isdo, qid: sc.id });
+// 			res.send({ msg: "성공", data: a });
+// 		} else {
+// 			res.send({ msg: "해당 사용자는 없습니다." });
+// 		}
+// 	} catch (error) {
+// 		res.statue(200).send({
+// 			msg: "접속실패 error ",
+// 			data: null,
+// 		});
+// 	}
+// };
 
-const postQuiz3 = async (req, res) => {
-	const { qid, isdo } = req.body;
-	const id = req.query.id;
-	try {
-		const user = await users.findByPk(id);
-		const sc = await score.findByPk(qid);
+// const postQuiz3 = async (req, res) => {
+// 	const { qid, isdo } = req.body;
+// 	const id = req.query.id;
+// 	try {
+// 		const user = await users.findByPk(id);
+// 		const sc = await score.findByPk(qid);
 
-		console.log(id);
-		// const qid = req.body.qid;
-		// const isdo = req.body.isdo;
-		// const userid = req.body.userid;
-		if (user && sc) {
-			const a = await quiz.create({
-				userid: user.id,
-				isdo: isdo,
-				qid: sc.id,
-			});
-			res.send({ msg: "성공", data: a });
-		} else {
-			res.send({ msg: "해당 사용자는 없습니다." });
-		}
-	} catch (error) {
-		console.log(error);
-		res.send({
-			msg: "접속실패 error ",
-			data: null,
-		});
-	}
-};
+// 		console.log(id);
+// 		// const qid = req.body.qid;
+// 		// const isdo = req.body.isdo;
+// 		// const userid = req.body.userid;
+// 		if (user && sc) {
+// 			const a = await quiz.create({
+// 				userid: user.id,
+// 				isdo: isdo,
+// 				qid: sc.id,
+// 			});
+// 			res.send({ msg: "성공", data: a });
+// 		} else {
+// 			res.send({ msg: "해당 사용자는 없습니다." });
+// 		}
+// 	} catch (error) {
+// 		console.log(error);
+// 		res.send({
+// 			msg: "접속실패 error ",
+// 			data: null,
+// 		});
+// 	}
+// };
 //유저아이디가  해당아이디값을 가진 스코어가 있으면 퀴즈로 do qid
 
 const deleteQuiz = async (req, res) => {
@@ -115,16 +114,15 @@ const deleteQuiz = async (req, res) => {
 
 const patchQuiz = async (req, res) => {
 	const id = req.query.id;
-	const { qid, isdo, userid } = req.body;
+	const { content, qscore} = req.body;
 	// const qid = req.body.qid;
 	// const isdo = req.body.isdo;
 	// const userid = req.body.userid;
 	let a;
 	try {
 		if (id) {
-			// 만약에 아이디가 존재하지 않는다면...? 똑같이 업데이트 완료 메세지 보내네요
 			a = await quiz.update(
-				{ qid: qid, isdo: isdo, userid: userid },
+				{ content: content, qscore: qscore },
 				{ where: { id: id } }
 			);
 
@@ -141,7 +139,6 @@ const getOneQuiz = async (req, res) => {
 	const id = req.query.id;
 	// const id = req.params;
 	try {
-		//여기는 a가 존재하지 않는다면 다른 메세지를 보내도록 고쳐보세요
 		const a = await quiz.findByPk(id);
 		if (a) {
 			res.send({ msg: "성공", data: a });
@@ -198,7 +195,5 @@ module.exports = {
 	deleteQuiz,
 	getOneQuiz,
 	patchQuiz,
-	postQuiz2,
-	postQuiz3,
 	postQuizeService,
 };

@@ -18,16 +18,16 @@ const getUsers = async (req, res) => {
 
 const postUsers = async (req, res) => {
 	const { email, password, name } = req.body;
-	console.log(name);
-	try { 
-		if (name) {
+	console.log(email, password, name);
+	try {  
+		if (email && password && name) {
 			const a = await users.create({ email: email, password: password, name: name});
 			res.send({ msg: "가입 성공", data: a });
 		} else {
 			res.send({ msg: "가입 실패" });
 		}
 	} catch (error) {
-		res.statue(200).send({
+		res.send({
 			msg: "접속실패 error ",
 			data: null,
 		});
@@ -35,15 +35,20 @@ const postUsers = async (req, res) => {
 };
 
 const postUsersLogin = async (req, res) => {
-	const { email, password} = req.body;
+	const { email, password } = req.body;
+	const name = req.query.name;
 	console.log(email, password);
 	try { 
-		const userEmail = await users.findByPk(email);
-		const userPass = await users.findByPk(password);
+		const userEmail = await users.findOne({where: { email : email}});
+		const userPass = await users.findOne({where: { password : password}});
+		const username = await users.findOne({where: { name : name}});
 		console.log(userEmail, userPass);
 		if (userEmail && userPass ) {
-			await users.create({ email: email, password: password, name: users.name});
-			res.send({ msg: "로그인 성공", data: users.name });
+			await users.create({ email: userEmail, 
+								 password: userPass,
+								 name: username
+								});
+			res.send({ msg: "로그인 성공", data: username });
 		} else {
 			res.send({ msg: "로그인 실패" });
 		}
