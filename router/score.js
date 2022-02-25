@@ -1,12 +1,12 @@
 const express = require("express");
-const controller = require("../controller/score");
+const controller = require("../controller/board");
 
 const router = express.Router();
 
-router.get("/", controller.getScore);
-router.post("/", controller.postScore);
-router.delete("/", controller.deleteScore);
-router.patch("/",controller.patchScore);
-router.get("/getOne", controller.getOneScore);
+router.get("/", controller.getboard);
+router.post("/", controller.postboard);
+router.delete("/", controller.deleteboard);
+router.patch("/",controller.patchboard);
+router.get("/getOne", controller.getOneboard);
 
 module.exports = router;

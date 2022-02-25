@@ -17,14 +17,14 @@ const getUsers = async (req, res) => {
 
 
 const postUsers = async (req, res) => {
-	const name = req.body.name;
+	const { email, password, name } = req.body;
 	console.log(name);
-	try {
+	try { 
 		if (name) {
-			const a = await users.create({ name: name});
-			res.send({ msg: "성공", data: a });
+			const a = await users.create({ email: email, password: password, name: name});
+			res.send({ msg: "가입 성공", data: a });
 		} else {
-			res.send({ msg: "데이터를 안넣어요!" });
+			res.send({ msg: "가입 실패" });
 		}
 	} catch (error) {
 		res.statue(200).send({
@@ -33,6 +33,28 @@ const postUsers = async (req, res) => {
 		});
 	}
 };
+
+const postUsersLogin = async (req, res) => {
+	const { email, password} = req.body;
+	console.log(email, password);
+	try { 
+		const userEmail = await users.findByPk(email);
+		const userPass = await users.findByPk(password);
+		console.log(userEmail, userPass);
+		if (userEmail && userPass ) {
+			await users.create({ email: email, password: password, name: users.name});
+			res.send({ msg: "로그인 성공", data: users.name });
+		} else {
+			res.send({ msg: "로그인 실패" });
+		}
+	} catch (error) {
+		res.send({
+			msg: "접속실패 error ",
+			data: null,
+		});
+	}
+};
+
 
 
 const deleteUsers = async (req, res) => {
@@ -104,4 +126,4 @@ const getOneUsers  = async (req, res) => {
 
 
 
-module.exports = { getUsers, postUsers, deleteUsers, getOneUsers, patchUsers};
+module.exports = { getUsers, postUsers, deleteUsers, getOneUsers, patchUsers, postUsersLogin};
