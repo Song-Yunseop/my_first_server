@@ -4,8 +4,8 @@ const getUsers = async (req, res) => {
 	// const isquery = req.query;
 	// const isparams = req.params;
 	try {
-		const a = await users.findAll();
-		res.send({ msg: "성공", data: a });
+		const userAll = await users.findAll();
+		res.send({ msg: "성공", data: userAll });
 	} catch (error) {
 		res.send({
 			msg: "접속실패 error ",

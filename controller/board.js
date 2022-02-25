@@ -4,8 +4,8 @@ const getBoard = async (req, res) => {
   // const isquery = req.query;
   // const isparams = req.params;
   try {
-    const a = await board.findAll();
-    res.send({ msg: "성공", data: a });
+    const boardAll = await board.findAll();
+    res.send({ msg: "성공", data: boardAll });
   } catch (error) {
     res.send({
       msg: "접속실패 error ",
@@ -34,12 +34,12 @@ const getOneBoard = async (req, res) => {
 
 const postBoardService = async (req, res) => {
   const { id } = req.query;
-  const { userName, quizName, answer } = req.body;
+  const { userId, quizId, answer } = req.body;
   // const id = req.params;
   try {
     const user = await users.findByPk(id);
-    const uName = await users.findByPk(userName);
-    const qName = await quiz.findByPk(quizName);
+    const uName = await users.findByPk(userId);
+    const qName = await quiz.findByPk(quizId);
 
     if (user && uName && qName) {
       const quizs = await quiz.create({
@@ -104,12 +104,12 @@ const deleteBoard = async (req, res) => {
 
 const patchBoard = async (req, res) => {
   const id = req.query.id;
-  const { userName, quizName, answer } = req.body;
+  const { userId, quizId, answer } = req.body;
   let a;
   try {
     if (id) {
       a = await board.update(
-        { userName: userName, quizName: quizName, answer: answer },
+        { userId: userId, quizId: quizId, answer: answer },
         { where: { id: id } }
       );
       res.send({ msg: "업데이트 완료", a });

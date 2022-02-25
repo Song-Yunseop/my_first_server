@@ -19,12 +19,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         required: true,
       },
-      userName: {
+      userId: {
         type: DataTypes.STRING,
         required: true,
       },
-      quizName: {
-        type: DataTypes.STRING,
+      quizId: {
+        type: DataTypes.INTEGER,
         required: true,
       },
       answer: {

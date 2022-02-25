@@ -5,8 +5,8 @@ const getQuiz = async (req, res) => {
 	// const isquery = req.query;
 	// const isparams = req.params;
 	try {
-		const a = await quiz.findAll();
-		res.send({ msg: "성공", data: a });
+		const quizAll = await quiz.findAll();
+		res.send({ msg: "성공", data: quizAll });
 	} catch (error) {
 		res.send({
 			msg: "접속실패 error ",
