@@ -1,9 +1,6 @@
-const { query } = require("express");
 const { quiz, users, score } = require("../models");
 
 const getQuiz = async (req, res) => {
-	// const isquery = req.query;
-	// const isparams = req.params;
 	try {
 		const quizAll = await quiz.findAll();
 		res.send({ msg: "성공", data: quizAll });
@@ -15,99 +12,42 @@ const getQuiz = async (req, res) => {
 	}
 };
 
+//해당 퀴즈 post
 const postQuiz = async (req, res) => {
 	const { content, qscore} = req.body;
-	console.log(content);
-	// const qid = req.body.qid;
-	// const isdo = req.body.isdo;
-	// const userid = req.body.userid;
 	try {
 		if (content) {
-			const a = await quiz.create({
+			const existQuiz = await quiz.create({
 				content: content,
 				qscore: qscore
 			});
-			res.send({ msg: "성공", data: a });
+			res.send({ msg: "성공", data: existQuiz });
 		} else {
 			res.send({ msg: "데이터를 안넣습니다." });
 		}
 	} catch (error) {
 		res.statue(200).send({
 			msg: "접속실패 error ",
-			data: null,
+			error: error,
 		});
 	}
 };
 
-// const postQuiz2 = async (req, res) => {
-// 	const { isdo } = req.body;
-// 	const id = req.query.id;
-// 	const sc = await score.findByPk(id);
-// 	console.log(sc);
-// 	// const qid = req.body.qid;
-// 	// const isdo = req.body.isdo;
-// 	// const userid = req.body.userid;
-
-// 	try {
-// 		if (sc) {
-// 			const a = await quiz.create({ isdo: isdo, qid: sc.id });
-// 			res.send({ msg: "성공", data: a });
-// 		} else {
-// 			res.send({ msg: "해당 사용자는 없습니다." });
-// 		}
-// 	} catch (error) {
-// 		res.statue(200).send({
-// 			msg: "접속실패 error ",
-// 			data: null,
-// 		});
-// 	}
-// };
-
-// const postQuiz3 = async (req, res) => {
-// 	const { qid, isdo } = req.body;
-// 	const id = req.query.id;
-// 	try {
-// 		const user = await users.findByPk(id);
-// 		const sc = await score.findByPk(qid);
-
-// 		console.log(id);
-// 		// const qid = req.body.qid;
-// 		// const isdo = req.body.isdo;
-// 		// const userid = req.body.userid;
-// 		if (user && sc) {
-// 			const a = await quiz.create({
-// 				userid: user.id,
-// 				isdo: isdo,
-// 				qid: sc.id,
-// 			});
-// 			res.send({ msg: "성공", data: a });
-// 		} else {
-// 			res.send({ msg: "해당 사용자는 없습니다." });
-// 		}
-// 	} catch (error) {
-// 		console.log(error);
-// 		res.send({
-// 			msg: "접속실패 error ",
-// 			data: null,
-// 		});
-// 	}
-// };
-//유저아이디가  해당아이디값을 가진 스코어가 있으면 퀴즈로 do qid
-
+// 퀴즈 삭제
 const deleteQuiz = async (req, res) => {
 	const id = req.body.id;
 	try {
-		const a = await quiz.findByPk(id);
-		if (a) {
-			const b = await quiz.destroy({ where: { id: id } });
-			res.send({ msg: "성공했습니다.", data: b });
+		const existQuiz = await quiz.findByPk(id);
+		if (existQuiz) {
+			await quiz.destroy({ where: { id: id } });
+			res.send({ msg: `${existQuiz.content}를 삭제 성공했습니다.` });
 		} else {
-			res.send({ mag: "해당 id존재하지 않음" });
+			res.send({ mag: "해당 id를 가진 퀴즈가 존재하지 않음" });
 		}
 	} catch (error) {
 		res.statue(200).send({
 			msg: "접속실패 error ",
-			data: null,
+			error: error,
 		});
 	}
 };
@@ -115,18 +55,15 @@ const deleteQuiz = async (req, res) => {
 const patchQuiz = async (req, res) => {
 	const id = req.query.id;
 	const { content, qscore} = req.body;
-	// const qid = req.body.qid;
-	// const isdo = req.body.isdo;
-	// const userid = req.body.userid;
-	let a;
+	
 	try {
 		if (id) {
-			a = await quiz.update(
+			const existQuiz = await quiz.update(
 				{ content: content, qscore: qscore },
 				{ where: { id: id } }
 			);
 
-			res.send({ msg: "업데이트 완료", a });
+			res.send({ msg: "업데이트 완료", existQuiz });
 		} else {
 			res.send({ msg: "id를 보내주세요..." });
 		}
@@ -137,33 +74,23 @@ const patchQuiz = async (req, res) => {
 
 const getOneQuiz = async (req, res) => {
 	const id = req.query.id;
-	// const id = req.params;
 	try {
-		const a = await quiz.findByPk(id);
-		if (a) {
-			res.send({ msg: "성공", data: a });
+		const existQuiz = await quiz.findByPk(id);
+		if (existQuiz) {
+			res.send({ msg: "성공", data: existQuiz });
 		} else {
-			res.send({ msg: "id가 존재하지 않습니다." });
+			res.send({ msg: `해당 ${id}값을 가진 퀴즈가 존재하지 않습니다. id값 재확인` });
 		}
 	} catch (error) {
 		res.send({
 			msg: "접속실패 error ",
-			data: null,
+			error: error,
 		});
 	}
 };
 
-// const isboxPatch = async () =>{
-// 	const { box } = req.body;
-// 	const { id } = req.query;
-// 	try {
-// 		id?await quiz.update({box:box},{where:{id : id}}):0;
-// 		res.send({data:"업데이트 완료"});
-// 	} catch (error) {
-// 		res.send(error);
-// 	}
-// };
 
+//잘했는데 필요없으니깐 삭제함. 이게 필요한 이유를 모르겟습니다.
 const postQuizeService = async (req, res) => {
 	const { id } = req.query; //유저아디
 	const { qid, isdo } = req.body;
@@ -195,5 +122,4 @@ module.exports = {
 	deleteQuiz,
 	getOneQuiz,
 	patchQuiz,
-	postQuizeService,
 };
