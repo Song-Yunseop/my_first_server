@@ -19,15 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         required: true,
       },
-      qid: {
-        type: DataTypes.INTEGER,
+      content: {
+        type: DataTypes.STRING,
         required: true,
       },
-      isdo: {
-        type: DataTypes.BOOLEAN,
-        required: true,
-      },
-      userid: {
+      qscore: {
         type: DataTypes.INTEGER,
         required: true,
       },

@@ -29,3 +29,8 @@ req: {
 npm install nodemon 설치
 nodemon app.js 이렇게했는데 에러뜸
 npx nodemon app.js
+
+2022/02/23
+다른db에서 데이터가져오는법을 배움
+
+
