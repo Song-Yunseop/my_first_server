@@ -2,7 +2,10 @@ const { users } = require("../models");
 
 const postUsersSingup = async (req, res) => {
 	const { email, password, name } = req.body;
-	
+	const existUser = await users.findOne({where: {email: email}})
+	if(existUser) {
+		return res.send({mag: "이미 있는 이메일입니다"})
+	}
 	try {  
 		if (email && password && name) {
 			const a = await users.create({ email: email, password: password, name: name});
@@ -20,7 +23,7 @@ const postUsersSingup = async (req, res) => {
 
 const postUsersLogin = async (req, res) => {
 	const { email, password } = req.body;
-	email, password
+	console.log(email, password)
 	if(!email && !password){
 		return res.send({msg: "이메일또는 패스워드를 입력하지 않았습니다."});
 	}
@@ -30,9 +33,9 @@ const postUsersLogin = async (req, res) => {
 			return res.send({msg: "해당 이메일이 존재하지 않습니다."})
 		}
 		if(existUser.password === password){
-			return res.send({msg: "로그인 성공", data: existUser.name});
+			return res.send({msg: "로그인 성공", id: existUser.name});
 		}else{
-			returres.send({msg: "비밀번호가 틀립니다."})
+			return res.send({msg: "비밀번호가 틀립니다."})
 		}
 	} catch (error) {
 		return res.send({msg: "서버에러 관리자 문의", data: error})
