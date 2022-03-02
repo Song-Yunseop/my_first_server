@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         required: true,
       },
       userId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         required: true,
       },
       quizId: {

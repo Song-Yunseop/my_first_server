@@ -1,8 +1,6 @@
 const { board, quiz, users } = require("../models");
 
 const getBoard = async (req, res) => {
-  // const isquery = req.query;
-  // const isparams = req.params;
   try {
     const boardAll = await board.findAll();
     res.send({ msg: "성공", data: boardAll });
@@ -18,9 +16,9 @@ const getOneBoard = async (req, res) => {
   const id = req.query.id;
   // const id = req.params;
   try {
-    const a = await board.findByPk(id);
-    if (a) {
-      res.send({ msg: "성공", data: a });
+    const boardOne = await board.findByPk(id);
+    if (boardOne) {
+      res.send({ msg: "성공", data: boardOne });
     } else {
       res.send({ msg: "id가 존재하지 않습니다." });
     }
@@ -33,31 +31,20 @@ const getOneBoard = async (req, res) => {
 };
 
 const postBoardService = async (req, res) => {
-  const { id } = req.query;
   const { userId, quizId, answer } = req.body;
-  // const id = req.params;
   try {
-    const user = await users.findByPk(id);
-    const uName = await users.findByPk(userId);
-    const qName = await quiz.findByPk(quizId);
-
-    if (user && uName && qName) {
-      const quizs = await quiz.create({
-        userid: uName.id,
-        content: qName.id,
-        answer,
-      });
-      let data = {
-        answer: quizs.isdo ? "정답입니다.!" : "틀렷어요..!",
-        name: uName.name,
-        content: qName.content,
-      };
-      if (quizs.isdo) {
-        res.send({ msg: "성공했습니다.", data: data });
-      }
-    } else {
-      res.send({ msg: "id가 존재하지 않습니다." });
+    const existUser = await users.findByPk(userId);
+    const existQuiz = await quiz.findByPk(quizId);
+    if(existQuiz){
+      return res.send({ msg: "해당 문제가 존재하지 않습니다."})
     }
+    else if(existUser){
+      return res.send({ msg : "해당 유저가 존재하지 않습니다."})
+    }
+    
+    await board.create({userId : existUser.id, quizId: existQuiz.id, answer: answer})
+    const isAnswer = answer? "맞았습니다." : "틀렷습니다."
+    return res.send({msg: `${existQuiz.name}님의 ${existQuiz.content}는  ${isAnswer}`})
   } catch (error) {
     res.send({
       msg: "접속실패 error ",
@@ -66,34 +53,20 @@ const postBoardService = async (req, res) => {
   }
 };
 
-const postBoard = async (req, res) => {
-  const num = req.body.num;
-  console.log(num);
+const deleteBoardSerive = async (req, res) => {
+  const {id, userid, quizId} = req.body;
   try {
-    if (num) {
-      const a = await board.create({ num: num });
-      res.send({ msg: "성공", data: a });
-    } else {
-      res.send({ msg: "데이터를 안넣어요!" });
+    const existUser = await users.findByPk(userid);
+    const existQuiz = await quiz.findByPk(quizId);
+    if(existQuiz){
+      return res.send({ msg: "해당 문제가 존재하지 않습니다."})
     }
-  } catch (error) {
-    res.statue(200).send({
-      msg: "접속실패 error ",
-      data: null,
-    });
-  }
-};
-
-const deleteBoard = async (req, res) => {
-  const id = req.body.id;
-  try {
-    const a = await board.findByPk(id);
-    if (a) {
-      const b = await board.destroy({ where: { id: id } });
-      res.send({ msg: "성공했습니다.", data: b });
-    } else {
-      res.send({ mag: "해당 id존재하지 않음" });
+    else if(existUser){
+      return res.send({ msg : "해당 유저가 존재하지 않습니다."})
     }
+    
+    await board.destroy({where: { id: id, userId : existUser.id, quizId: existQuiz.id}})
+    return res.send({msg: `${existQuiz.name}님의 ${existQuiz.content}문제를 삭제했습니다.`})
   } catch (error) {
     res.statue(200).send({
       msg: "접속실패 error ",
@@ -105,14 +78,23 @@ const deleteBoard = async (req, res) => {
 const patchBoard = async (req, res) => {
   const id = req.query.id;
   const { userId, quizId, answer } = req.body;
-  let a;
   try {
     if (id) {
-      a = await board.update(
-        { userId: userId, quizId: quizId, answer: answer },
+      const existUser = await users.findByPk(userId);
+      const existQuiz = await quiz.findByPk(quizId);
+      if(existQuiz){
+        return res.send({ msg: "해당 문제가 존재하지 않습니다."})
+      }
+      else if(existUser){
+        return res.send({ msg : "해당 유저가 존재하지 않습니다."})
+      }
+
+      //굿
+      const boards = await board.update(
+        { userId: existUser.id, quizId: existQuiz.id, answer: answer },
         { where: { id: id } }
       );
-      res.send({ msg: "업데이트 완료", a });
+      return res.send({ msg: "업데이트 완료", data: boards });
     } else {
       res.send({ msg: "id가 존재하지 않습니다..." });
     }
@@ -123,8 +105,7 @@ const patchBoard = async (req, res) => {
 
 module.exports = {
   getBoard,
-  postBoard,
-  deleteBoard,
+  deleteBoardSerive,
   postBoardService,
   patchBoard,
   getOneBoard,
