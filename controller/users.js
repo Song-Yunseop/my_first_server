@@ -20,28 +20,24 @@ const postUsersSingup = async (req, res) => {
 
 const postUsersLogin = async (req, res) => {
 	const { email, password } = req.body;
-	const name = req.query.name;
-	console.log(email, password);
-	try { 
-		const userEmail = await users.findOne({where: { email : email}});
-		const userPass = await users.findOne({where: { password : password}});
-		const username = await users.findOne({where: { name : name}});
-		console.log(userEmail, userPass);
-		if (userEmail && userPass ) {
-			await users.create({ email: userEmail, 
-								 password: userPass,
-								 name: username
-								});
-			res.send({ msg: "로그인 성공", data: username });
-		} else {
-			res.send({ msg: "로그인 실패" });
+	email, password
+	if(!email && !password){
+		return res.send({msg: "이메일또는 패스워드를 입력하지 않았습니다."});
+	}
+	try {
+		const existUser = await users.findOne({where: {email: email}})
+		if(!existUser){
+			return res.send({msg: "해당 이메일이 존재하지 않습니다."})
+		}
+		if(existUser.password === password){
+			return res.send({msg: "로그인 성공", data: existUser.name});
+		}else{
+			returres.send({msg: "비밀번호가 틀립니다."})
 		}
 	} catch (error) {
-		res.send({
-			msg: "접속실패 error ",
-			data: null,
-		});
+		return res.send({msg: "서버에러 관리자 문의", data: error})
 	}
+	
 };
 
 const deleteUsers = async (req, res) => {
