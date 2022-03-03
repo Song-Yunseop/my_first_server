@@ -1,12 +1,10 @@
-const express = require("express");
-const controller = require("../controller/users");
-
+const express = require('express');
+const controller = require('../controller/user');
+const mid = require('../middelWhere/authMiddleware');
 const router = express.Router();
 
-// /user
-router.post("/login", controller.postUsersLogin);
-router.post("/singup", controller.postUsersSingup);
-router.delete("/", controller.deleteUsers);
-router.patch("/", controller.patchUsers);
+router.post('/login', controller.loginService);
+router.post('/singup', controller.singupService);
+router.get('/', mid, controller.getUserService);
 
 module.exports = router;
