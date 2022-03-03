@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class board extends Model {
     /**
@@ -19,22 +19,24 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         required: true,
       },
-      userId: {
-        type: DataTypes.INTEGER,
+      title: {
+        type: DataTypes.STRING,
+        required: true,
+        allowNull: true,
+      },
+      text: {
+        type: DataTypes.STRING,
         required: true,
       },
-      quizId: {
+      userid: {
         type: DataTypes.INTEGER,
         required: true,
-      },
-      answer: {
-        type: DataTypes.BOOLEAN,
-        required: true,
+        allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: "board",
+      modelName: 'board',
       timestamps: false,
     }
   );

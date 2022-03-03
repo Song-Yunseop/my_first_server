@@ -1,7 +1,7 @@
 const express = require('express');
 const { sequelize, Sequelize, mytest } = require('./models');
 const router = require('./router');
-
+const viewRouter = require('./view');
 const driver = async () => {
   try {
     await sequelize.sync();
@@ -14,8 +14,14 @@ const driver = async () => {
 };
 driver();
 const app = express();
+app.use('/web', express.static('web'));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use('/', router);
+
+app.use('/api', router);
+app.set('views', __dirname + '/web');
+app.set('view engine', 'ejs');
+app.use('/', viewRouter);
 
 app.listen(3000, () => {
   console.log('http://localhost:3000');

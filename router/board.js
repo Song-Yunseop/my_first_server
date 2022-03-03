@@ -1,14 +1,14 @@
-const express = require("express");
-const controller = require("../controller/board");
-
+const express = require('express');
+const controller = require('../controller/board');
+const mid = require('../middelWhere/authMiddleware');
 const router = express.Router();
 
+router
+    .route('/')
+    .get(controller.getBoardService)
+    .post(mid, controller.postBoardService)
+    .patch(mid, controller.patchBoardService);
 
-// /board
-router.get("/", controller.getBoard);
-router.post("/", controller.postBoardService);
-router.delete("/", controller.deleteBoardSerive);
-router.patch("/",controller.patchBoard);
-router.get("/getOne", controller.getOneBoard);
+router.route('/:boardId').delete(mid, controller.deleteBoardService);
 
 module.exports = router;
