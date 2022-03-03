@@ -20,7 +20,7 @@ const postUsersSingup = async (req, res) => {
 
 const postUsersLogin = async (req, res) => {
 	const { email, password } = req.body;
-	email, password
+
 	if(!email && !password){
 		return res.send({msg: "이메일또는 패스워드를 입력하지 않았습니다."});
 	}
@@ -30,7 +30,7 @@ const postUsersLogin = async (req, res) => {
 			return res.send({msg: "해당 이메일이 존재하지 않습니다."})
 		}
 		if(existUser.password === password){
-			return res.send({msg: "로그인 성공", data: existUser.name});
+			return res.send({msg: "로그인 성공", data: {name: existUser.name, id : existUser.id}});
 		}else{
 			returres.send({msg: "비밀번호가 틀립니다."})
 		}
@@ -76,6 +76,8 @@ const patchUsers = async (req, res) =>{
 	}
 };
 
-
-
-module.exports = { postUsersSingup, deleteUsers, patchUsers, postUsersLogin};
+const getuser = async (req, res)=>{
+	const user = res.locals.user;
+	res.send({msg: "성공", data: {user, test: res.locals.ismytest}})
+}
+module.exports = { postUsersSingup, deleteUsers, patchUsers, postUsersLogin, getuser};
