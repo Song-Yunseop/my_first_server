@@ -3,24 +3,7 @@
 
 
 ## 첫 처밋 갑니다이
-```js
-const express = require("express")
-```
 
-
-
-POST /test 
-req: {
-        body: { test : string } 
-     }
-     
-     
-DELETE /test
-req: {
-        body: { id : number }
-     }
-     
-둘다 res는 마음대로
 
 첫 브랜치 테스트
 내 첫 브랜치 테스팅! 가자!
