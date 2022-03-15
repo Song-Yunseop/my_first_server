@@ -9,6 +9,9 @@ router
     .post(mid, controller.postBoardService)
     .patch(mid, controller.patchBoardService);
 
+
+    
+router.get('/userboard', controller.getuserboard)
 router.route('/:boardId').delete(mid, controller.deleteBoardService);
 
 module.exports = router;

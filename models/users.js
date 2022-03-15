@@ -43,5 +43,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
+
+  users.associate = function (models) {
+    models.users.hasMany(models.board, {
+      foreignKey: "userid",
+      sourceKey: "id",
+    });
+  };
+
+
+
   return users;
 };

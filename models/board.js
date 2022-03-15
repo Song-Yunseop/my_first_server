@@ -40,6 +40,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false,
     }
   );
+  board.associate = function (models) {
+    models.board.belongsTo(models.users, {
+      foreignKey: "userid",
+      targetKey: "id",
+    });
+  };
+
 
   return board;
 };

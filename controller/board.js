@@ -1,4 +1,5 @@
 const { board } = require('../models');
+const { users } = require('../models');
 
 const getBoardService = async (req, res) => {
     const { id } = req.query;
@@ -28,6 +29,7 @@ const postBoardService = async (req, res) => {
         return res.send({ msg: '알수없는 에러', success: false, data: error });
     }
 };
+
 const patchBoardService = async (req, res) => {
     const { title, text } = req.body;
     const id = req.query.id;
@@ -61,4 +63,24 @@ const deleteBoardService = async (req, res) => {
     }
 };
 
-module.exports = { getBoardService, postBoardService, patchBoardService, deleteBoardService };
+const getuserboard = async (req, res) => {
+    const { userid } = req.body;
+    if (!userid) {
+        return res.send({ msg: '해당 id를 넣어주세요', success: false });
+    }
+    try {
+        const userboard = await board.findAll({
+          include: [
+            { model: users ,
+              attributes: { exclude: [ "id", "password"] },
+            },
+          ],
+        });
+        return res.send({ msg: '성공', success: userboard });
+      } catch (error) {
+        console.log(error);
+        return res.send({ msg: '알수없는 에러', success: false, data: error });
+      }
+    };
+
+module.exports = { getBoardService, postBoardService, patchBoardService, deleteBoardService, getuserboard };
